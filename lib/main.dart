@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/screens/home_screen.dart';
+import 'package:flutterdemo/screens/form_screen.dart';
 
 void main() {
-  runApp(DemoApp());
-}
-
-class DemoApp extends StatelessWidget {
-  const DemoApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(primaryColor: Colors.red),
-      home: Scaffold(
-        appBar: AppBar(title: Text('Hello world!')),
-      ),
-    );
-  }
+  runApp(MaterialApp(
+    theme: ThemeData(primaryColor: Colors.red),
+    initialRoute: "/",
+    routes: {
+      '/': (context) => HomeScreen(),
+      '/form': (context) => FormScreen()
+    },
+  ));
 }
