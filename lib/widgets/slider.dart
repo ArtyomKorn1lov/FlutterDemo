@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutterdemo/utils/slider_card_model.dart';
+import 'package:flutterdemo/utils/SliderCardModel.dart';
+import 'package:flutterdemo/widgets/card_detail.dart';
+import 'package:flutterdemo/widgets/work_card.dart';
 
 class SliderMain extends StatefulWidget {
   final List<SliderCardModel> items;
@@ -29,29 +31,24 @@ class _SliderMainState extends State<SliderMain> {
         CarouselSlider(
           items: widget.items
               .map(
-                (item) => Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 30, horizontal: 32),
-                    decoration: BoxDecoration(
-                      color: Colors.blueGrey[200],
-                      borderRadius: BorderRadius.circular(28),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 10,
-                      children: <Widget>[
-                        Text(
-                          item.title,
-                          style: TextStyle(color: Colors.black, fontSize: 15),
+                (item) => GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      backgroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(16),
                         ),
-                        Text(
-                          item.description ?? "",
-                          style: TextStyle(color: Colors.black87, fontSize: 13),
-                        ),
-                      ],
-                    ),
+                      ),
+                      builder: (BuildContext context) {
+                        return CardDetail(item: item);
+                      },
+                    );
+                  },
+                  child: WorkCard(
+                    title: item.title,
+                    description: item.description ?? "",
                   ),
                 ),
               )
