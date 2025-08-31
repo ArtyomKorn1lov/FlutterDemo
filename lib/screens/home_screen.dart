@@ -112,6 +112,18 @@ class HomeScreen extends StatelessWidget {
           spacing: 30,
           children: <Widget>[
             Container(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    Colors.indigo,
+                  ),
+                ),
+                onPressed: () => navigateToForm(context),
+                child: Text('Открыть форму обратной связи', style: TextStyle(color: Colors.white)),
+              ),
+            ),
+            Container(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               child: BonusWidget(title: 'Бонусная'),
             ),
