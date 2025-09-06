@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutterdemo/utils/SliderCardModel.dart';
+import 'package:flutterdemo/utils/models/SliderCardModel.dart';
 import 'package:flutterdemo/widgets/card_detail.dart';
 import 'package:flutterdemo/widgets/work_card.dart';
 

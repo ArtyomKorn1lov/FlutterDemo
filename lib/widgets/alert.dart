@@ -5,9 +5,11 @@ typedef AlertCallback = void Function();
 class Alert extends StatelessWidget {
   final String? content;
   final AlertCallback? onClose;
+  final String? title;
 
   const Alert({
     super.key,
+    this.title = "Ошибка",
     this.onClose,
     this.content
   });
@@ -16,7 +18,7 @@ class Alert extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.white,
-      title: Text('Успешно'),
+      title: Text(title!),
       content: Text(content ?? ''),
       actions: [
         ElevatedButton(

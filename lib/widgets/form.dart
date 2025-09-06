@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterdemo/utils/FormData.dart';
+import 'package:flutterdemo/utils/api/Endpoints.dart';
+import 'package:flutterdemo/utils/models/FormData.dart';
+import 'package:flutterdemo/utils/models/SuccessResponse.dart';
 import 'package:flutterdemo/widgets/alert.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -50,30 +52,42 @@ class _FormFeedbackState extends State<FormFeedback> {
         : null;
   }
 
-  void onSubmit(BuildContext context) {
+  void onSubmit(BuildContext context) async {
     if (!formKey.currentState!.validate()) {
       return;
     }
-
-    debugPrint('');
-    debugPrint('formData.name ${formData.name}');
-    debugPrint('formData.secondname ${formData.secondname}');
-    debugPrint('formData.surname ${formData.surname}');
-    debugPrint('formData.email ${formData.email}');
-    debugPrint('formData.phone ${formData.phone}');
-    debugPrint('');
-
-    showDialog(
-      context: context,
-      builder: (BuildContext alertContext) {
-        return Alert(
-          content: 'Мы отправили письмо на ${formData.email}',
-          onClose: () {
-            Navigator.of(context).pop();
-          },
-        );
-      },
-    );
+    await Endpoints.sendFeedback(formData)
+        .then((SuccessResponse response) {
+          if (!context.mounted) {
+            return;
+          }
+          showDialog(
+            context: context,
+            builder: (BuildContext alertContext) {
+              return Alert(
+                title: 'Успешно',
+                content: response.message,
+                onClose: () {
+                  Navigator.of(context).pop();
+                },
+              );
+            },
+          );
+        })
+        .catchError((exception) {
+          if (!context.mounted) {
+            return;
+          }
+          showDialog(
+            context: context,
+            builder: (BuildContext alertContext) {
+              return Alert(
+                title: 'Ошибка',
+                content: exception.message,
+              );
+            },
+          );
+        });
   }
 
   @override

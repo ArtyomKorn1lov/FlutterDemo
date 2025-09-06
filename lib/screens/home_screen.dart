@@ -1,89 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/utils/api/Endpoints.dart';
+import 'package:flutterdemo/utils/models/CustomException.dart';
+import 'package:flutterdemo/utils/models/MainData.dart';
 import 'package:flutterdemo/widgets/bonus.dart';
 import 'package:flutterdemo/widgets/slider.dart';
-import 'package:flutterdemo/utils/SliderCardModel.dart';
-import 'package:flutterdemo/widgets/card_detail.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
-  final List<SliderCardModel> sales = [
-    SliderCardModel(
-      title: "Скидка 10%",
-      description: "Получите скидку на первый заказ сейчас",
-    ),
-    SliderCardModel(
-      title: "Скидка 5%",
-      description: "Получите скидку на второй заказ",
-    ),
-    SliderCardModel(
-      title: "Скидка 25%",
-      description: "Получите скидку на третий заказ",
-    ),
-  ];
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-  final List<SliderCardModel> news = [
-    SliderCardModel(
-      title: "Новые события",
-      description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-    ),
-    SliderCardModel(
-      title: "Не новые события%",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-    ),
-    SliderCardModel(
-      title: "Свежие события",
-      description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
-    ),
-  ];
-
-  final List<SliderCardModel> products = [
-    SliderCardModel(
-      title: "Товар 1",
-      description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-    ),
-    SliderCardModel(
-      title: "Товар 2",
-      description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-    ),
-    SliderCardModel(
-      title: "Товар 3",
-      description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-    ),
-    SliderCardModel(
-      title: "Товар 4",
-      description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-    ),
-    SliderCardModel(
-      title: "Товар 5",
-      description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-    ),
-    SliderCardModel(
-      title: "Товар 6",
-      description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-    ),
-    SliderCardModel(
-      title: "Товар 7",
-      description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-    ),
-    SliderCardModel(
-      title: "Товар 8",
-      description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-    ),
-  ];
+class _HomeScreenState extends State<HomeScreen> {
+  late MainData? mainData = MainData();
 
   void navigateToForm(BuildContext context) {
     Navigator.pushNamed(context, '/form');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMainData();
+  }
+
+  Future<void> getMainData() async {
+    try {
+      MainData response = await Endpoints.getMainData();
+      setState(() {
+        mainData = response;
+      });
+    } on CustomException catch (error) {
+      print('Ошибка: ${error.message}');
+    }
   }
 
   @override
@@ -120,16 +70,31 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () => navigateToForm(context),
-                child: Text('Открыть форму обратной связи', style: TextStyle(color: Colors.white)),
+                child: Text(
+                  'Открыть форму обратной связи',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               child: BonusWidget(title: 'Бонусная'),
             ),
-            SliderMain(title: 'Акции', items: sales),
-            SliderMain(title: 'Новости', items: news),
-            SliderMain(title: 'Товары', items: products),
+            Visibility(
+              visible: mainData?.sales != null,
+              child: SliderMain(title: 'Акции', items: mainData?.sales ?? []),
+            ),
+            Visibility(
+              visible: mainData?.news != null,
+              child: SliderMain(title: 'Новости', items: mainData?.news ?? []),
+            ),
+            Visibility(
+              visible: mainData?.products != null,
+              child: SliderMain(
+                title: 'Товары',
+                items: mainData?.products ?? [],
+              ),
+            ),
           ],
         ),
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterdemo/utils/SliderCardModel.dart';
+import 'package:flutterdemo/utils/models/SliderCardModel.dart';
 import 'package:flutterdemo/widgets/work_card.dart';
 
 class CardDetail extends StatelessWidget {
