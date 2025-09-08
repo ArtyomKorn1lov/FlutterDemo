@@ -14,7 +14,7 @@ class FormFeedback extends StatefulWidget {
 
 class _FormFeedbackState extends State<FormFeedback> {
   final formKey = GlobalKey<FormState>();
-  final formData = FormData(
+  final FormData formData = FormData(
     name: '',
     surname: '',
     secondname: '',

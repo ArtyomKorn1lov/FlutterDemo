@@ -19,6 +19,10 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushNamed(context, '/form');
   }
 
+  void navigateToAuth(BuildContext context) {
+    Navigator.pushNamed(context, '/auth');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -72,6 +76,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () => navigateToForm(context),
                 child: Text(
                   'Открыть форму обратной связи',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    Colors.indigo,
+                  ),
+                ),
+                onPressed: () => navigateToAuth(context),
+                child: Text(
+                  'Открыть форму авторизации',
                   style: TextStyle(color: Colors.white),
                 ),
               ),

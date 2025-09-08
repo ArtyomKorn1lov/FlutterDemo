@@ -1,5 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterdemo/screens/auth_screen.dart';
 import 'package:flutterdemo/screens/home_screen.dart';
 import 'package:flutterdemo/screens/form_screen.dart';
 
@@ -10,7 +11,8 @@ void main() async {
     initialRoute: "/",
     routes: {
       '/': (context) => HomeScreen(),
-      '/form': (context) => FormScreen()
+      '/form': (context) => FormScreen(),
+      '/auth': (context) => AuthScreen(),
     },
   ));
 }
